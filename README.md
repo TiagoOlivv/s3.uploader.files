@@ -44,7 +44,7 @@ s3.uploader.file.app/
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 - Python 3.10+
 - Valid AWS credentials (with S3 access)

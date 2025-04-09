@@ -1,25 +1,32 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import os
 
-def upload_folder_parallel(s3, bucket, base_path: Path, update_progress):
-    all_files = [p for p in base_path.rglob("*") if p.is_file()]
-    total_files = len(all_files)
-    uploaded_count = [0]
+def get_all_files(base_path: Path):
+    return [f for f in base_path.rglob("*") if f.is_file()]
 
-    def upload_file(path: Path):
-        try:
-            relative_path = path.relative_to(base_path)
-            key = str(relative_path).replace(os.sep, "/")
-            s3.upload_file(str(path), bucket, key)
+def upload_file(s3, bucket: str, base_path: Path, file_path: Path):
+    relative_path = file_path.relative_to(base_path)
+    s3.upload_file(str(file_path), bucket, str(relative_path))
 
-            uploaded_count[0] += 1
-            progress = int((uploaded_count[0] / total_files) * 100)
+def upload_folder_parallel(s3, bucket: str, base_path: Path, update_progress):
+    files = get_all_files(base_path)
+    total_files = len(files)
+    completed = 0
+
+    import multiprocessing
+    max_workers = max(1, multiprocessing.cpu_count())
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(upload_file, s3, bucket, base_path, f) for f in files]
+
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"Error uploading file: {e}")
+            completed += 1
+            progress = int((completed / total_files) * 100)
             update_progress(progress)
-        except Exception as e:
-            print(f"Error uploading {path}: {e}")
 
-    with ThreadPoolExecutor() as executor:
-        executor.map(upload_file, all_files)
-
-    return uploaded_count[0]
+    return completed

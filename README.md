@@ -1,4 +1,4 @@
-# s3.uploader.file.app
+# s3.uploader.file
 
 **A modern desktop app to upload files in parallel to Amazon S3**, built with Python and PyQt6. Simple, elegant, and optimized for performance.
 

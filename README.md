@@ -52,7 +52,7 @@ s3.uploader.file.app/
 
 ---
 
-## 🧰 Installation & Usage
+## Installation & Usage
 
 ```bash
 git clone https://github.com/tiagoolivv/s3.uploader.file.app.git
@@ -63,7 +63,7 @@ make run
 
 ---
 
-## 🛠️ Makefile Commands
+## Makefile Commands
 
 | Command           | Description                                     |
 |------------------|-------------------------------------------------|
@@ -75,7 +75,7 @@ make run
 
 ---
 
-## 🧪 How to Use
+## How to Use
 
 1. Fill in all AWS credentials:
    - AWS Region
@@ -89,7 +89,7 @@ make run
 
 ---
 
-## 🧵 Behind the Scenes
+## Behind the Scenes
 
 - Uploads are done using `ThreadPoolExecutor` for parallelism.
 - Only file files are uploaded.
@@ -97,13 +97,13 @@ make run
 
 ---
 
-## 💾 Local Config (Optional)
+## Local Config (Optional)
 
 If the **Save credentials** checkbox is enabled, the app stores your AWS details and bucket name in a local file (`config.json`). These values will be automatically restored on the next launch.
 
 ---
 
-## ❌ Not Implemented
+## Not Implemented
 
 - Time remaining estimation (removed due to inaccuracy)
 - Drag-and-drop support
@@ -111,8 +111,6 @@ If the **Save credentials** checkbox is enabled, the app stores your AWS details
 
 ---
 
-## 📄 License
+## License
 
 This project is open for free use and modification. Contributions via pull requests are welcome!
-
----
